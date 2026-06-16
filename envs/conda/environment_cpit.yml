@@ -1,0 +1,20 @@
+name: cpit
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python>=3.11,<3.13
+  - pip
+  # Core numerical stack (C-extensions install cleaner via conda than pip)
+  - numpy>=2.0
+  - scipy>=1.10
+  - scikit-learn>=1.0
+  - pandas>=2.0
+  - matplotlib>=3.7
+  - pyyaml>=5.4
+  - jupyterlab
+  - ipykernel
+  - pip:
+      # Packages with strict version pins or not on conda-forge:
+      # install the project itself so pyproject.toml resolves xarray/zarr/gcsfs/etc.
+      - "-e .[dev]"
