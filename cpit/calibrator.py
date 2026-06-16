@@ -8,14 +8,13 @@ from .pit import randomized_pit
 
 
 def build_c_hat(
-    u_cal: np.ndarray, seed: int | None = None
+    u_cal: np.ndarray,
 ) -> Callable[[np.ndarray], np.ndarray]:
     """
     Build boundary-modified calibrator Ĉ(t) per Eq. (15):
         Ĉ(t) = Ĉ⁺(t) for t ∈ (0,1],  0 for t = 0.
     Use this for predictive CDF weights w_j.
     """
-    _ = seed  # API compatibility; PIT randomization happens when constructing u_cal.
     u_cal = np.sort(np.asarray(u_cal).ravel())
     n_cal = len(u_cal)
 
@@ -86,13 +85,12 @@ def build_c_hat_inv(
 
 def c_hat_monotone_and_bounds(
     u_cal: np.ndarray,
-    seed: int | None = None,
 ) -> tuple[Callable[[np.ndarray], np.ndarray], float, float]:
     """Return (C_hat, lo, hi) where lo = 1/(n+1) and hi = 1.
 
     Ĉ(0) = 0 per Eq. (15). For t > 0, Ĉ(t) ∈ {1/(n+1), …, 1}.
     lo = 1/(n+1) is the first positive step (not the minimum — Ĉ(0)=0 is lower).
     """
-    c_hat_fn = build_c_hat(u_cal, seed=seed)
+    c_hat_fn = build_c_hat(u_cal)
     n = len(np.asarray(u_cal).ravel())
     return c_hat_fn, 1.0 / (n + 1), 1.0

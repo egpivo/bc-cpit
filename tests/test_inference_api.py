@@ -52,7 +52,7 @@ def test_quantile_vs_weighted_consistency():
     y_samples = np.random.randn(500)
     params = AffineParams(1.0, 0.0)
     u_cal = np.random.uniform(0, 1, 200)
-    c_hat_fn = build_c_hat(u_cal, seed=2)
+    c_hat_fn = build_c_hat(u_cal)
     q_direct = quantile_from_f_tilde(y_samples, params, c_hat_fn, 0.5)
     from cpit import get_weighted_samples_at_x
 

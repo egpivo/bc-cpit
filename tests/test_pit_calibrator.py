@@ -46,7 +46,7 @@ def test_c_hat_monotone():
 
 
 def test_c_hat_bounds():
-    c_hat_fn, lo, hi = c_hat_monotone_and_bounds(np.ones(10) * 0.5, seed=0)
+    c_hat_fn, lo, hi = c_hat_monotone_and_bounds(np.ones(10) * 0.5)
     assert 0 < lo < 1
     assert hi == 1.0
     # Äˆ(0) = 0 per Eq. (14); values for t > 0 are >= lo = 1/(n_cal+1).
