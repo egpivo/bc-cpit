@@ -1,5 +1,10 @@
 # cpit
 
+[![CI](https://github.com/SpaceTimeViz/cpit/actions/workflows/ci.yml/badge.svg)](https://github.com/SpaceTimeViz/cpit/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/SpaceTimeViz/cpit/graph/badge.svg?token=C6VlD0m3Tq)](https://codecov.io/gh/SpaceTimeViz/cpit)
+[![PyPI](https://img.shields.io/pypi/v/cpit)](https://pypi.org/project/cpit/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 Bias-corrected conformal PIT calibration for sample-based predictive distributions.
 
 ## Install
