@@ -167,10 +167,10 @@ def run_replicate(
         hi = quantile_from_weighted_samples_batched(Yw_cpit_gam, Ww_cpit_gam, 1.0 - alpha / 2)
         return np.stack([lo, hi], axis=1)
 
-    intervals_qr_xdep = lambda alpha: cqr_intervals_batch(cal_samples_adj_gam, y_cal, test_samples_adj_gam, alpha, clamp_radius=False)[0]
+    intervals_qr_xdep = lambda alpha: cqr_intervals_batch(cal_samples_adj_gam, y_cal, test_samples_adj_gam, alpha)[0]
     if mode == "all":
-        intervals_qr_raw = lambda alpha: cqr_intervals_batch(cal_samples, y_cal, test_samples, alpha, clamp_radius=False)[0]
-        intervals_qr_global = lambda alpha: cqr_intervals_batch(cal_samples_adj, y_cal, test_samples_adj, alpha, clamp_radius=False)[0]
+        intervals_qr_raw = lambda alpha: cqr_intervals_batch(cal_samples, y_cal, test_samples, alpha)[0]
+        intervals_qr_global = lambda alpha: cqr_intervals_batch(cal_samples_adj, y_cal, test_samples_adj, alpha)[0]
 
     intervals_sr_raw = lambda alpha: sr_split_conformal_intervals_batch(cal_samples, y_cal, test_samples, alpha)
     intervals_sr_global = lambda alpha: sr_split_conformal_intervals_batch(cal_samples_adj, y_cal, test_samples_adj, alpha)

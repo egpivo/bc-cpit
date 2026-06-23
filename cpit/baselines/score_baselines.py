@@ -51,40 +51,6 @@ def sr_split_conformal_interval(
     return float(mu_test - q * sigma_test), float(mu_test + q * sigma_test)
 
 
-def cdf_rank_split_conformal_interval(
-    y_calibration_samples: np.ndarray,
-    y_calibration_observed: np.ndarray,
-    y_test_samples: np.ndarray,
-    alpha: float,
-) -> Tuple[float, float]:
-    """
-    CDF-rank baseline around median:
-      s_i = |F_i(y_i) - 0.5|
-      q = conformal_quantile(s_i)
-      C(x) = [F_test^{-1}(0.5-q), F_test^{-1}(0.5+q)]
-    """
-    y_cal_s = np.asarray(y_calibration_samples)
-    y_cal_o = np.asarray(y_calibration_observed).ravel()
-    if y_cal_s.ndim != 2:
-        raise ValueError("y_calibration_samples must have shape (n_cal, m)")
-    if y_cal_s.shape[0] != y_cal_o.size:
-        raise ValueError("Calibration samples/observed size mismatch")
-
-    # empirical CDF at observed y on each calibration point
-    u_cal = np.mean(y_cal_s <= y_cal_o[:, None], axis=1)
-    scores = np.abs(u_cal - 0.5)
-    q = _conformal_quantile(scores, alpha)
-
-    y_test = np.asarray(y_test_samples).ravel()
-    low_p = float(np.clip(0.5 - q, 0.0, 1.0))
-    high_p = float(np.clip(0.5 + q, 0.0, 1.0))
-    # Match empirical-CDF inversion: Q(tau) = inf{y: F(y) >= tau}
-    # via "higher" order-statistic quantile.
-    low = float(np.quantile(y_test, low_p, method="higher"))
-    high = float(np.quantile(y_test, high_p, method="higher"))
-    return low, high
-
-
 def empirical_crps_score(
     y_samples: np.ndarray,
     y_value: float,

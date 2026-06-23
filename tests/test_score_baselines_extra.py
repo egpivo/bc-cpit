@@ -7,7 +7,6 @@ from cpit.baselines.score_baselines import (
     _conformal_quantile,
     _empirical_crps_batch,
     _empirical_crps_rows,
-    cdf_rank_split_conformal_interval,
     crps_split_conformal_interval,
     crps_split_conformal_intervals_batch,
     empirical_crps_score,
@@ -56,28 +55,6 @@ def test_sr_interval_wrong_ndim(test_samples):
 def test_sr_interval_size_mismatch(test_samples):
     with pytest.raises(ValueError, match="mismatch"):
         sr_split_conformal_interval(
-            np.ones((5, 10)), np.ones(6), test_samples, alpha=0.1
-        )
-
-
-def test_cdf_rank_interval_ordering(cal_data, test_samples):
-    y_cal_s, y_cal_o = cal_data
-    lo, hi = cdf_rank_split_conformal_interval(
-        y_cal_s, y_cal_o, test_samples, alpha=0.1
-    )
-    assert lo <= hi
-
-
-def test_cdf_rank_interval_wrong_ndim(test_samples):
-    with pytest.raises(ValueError, match="shape"):
-        cdf_rank_split_conformal_interval(
-            np.ones(10), np.ones(10), test_samples, alpha=0.1
-        )
-
-
-def test_cdf_rank_interval_size_mismatch(test_samples):
-    with pytest.raises(ValueError, match="mismatch"):
-        cdf_rank_split_conformal_interval(
             np.ones((5, 10)), np.ones(6), test_samples, alpha=0.1
         )
 

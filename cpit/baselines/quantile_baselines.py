@@ -32,46 +32,17 @@ def quantile_interval_from_samples(
     return float(low), float(high)
 
 
-def cqr_from_samples(
-    y_calibration_samples: np.ndarray,
-    y_calibration_observed: np.ndarray,
-    y_test_samples: np.ndarray,
-    alpha: float,
-) -> Tuple[float, float]:
-    """
-    CQR-from-samples: at each calibration point we have samples; lower = quantile(alpha/2),
-    upper = quantile(1-alpha/2). Residual = max(lower - y_obs, y_obs - upper).
-    Radius = quantile(1-alpha) of residuals. Test interval = [l_test - radius, u_test + radius].
-    y_calibration_samples: (n_cal, m), y_calibration_observed: (n_cal,), y_test_samples: (m,).
-    """
-    y_cal_s = np.asarray(y_calibration_samples)
-    y_cal_o = np.asarray(y_calibration_observed).ravel()
-    if y_cal_s.ndim == 1:
-        y_cal_s = y_cal_s.reshape(1, -1)
-    y_cal_s.shape[0]
-    low_cal = np.quantile(y_cal_s, alpha / 2, axis=1)
-    high_cal = np.quantile(y_cal_s, 1.0 - alpha / 2, axis=1)
-    residuals = np.maximum(low_cal - y_cal_o, y_cal_o - high_cal)
-    radius = np.quantile(residuals, 1 - alpha)
-    y_test = np.asarray(y_test_samples).ravel()
-    low_test = np.quantile(y_test, alpha / 2)
-    high_test = np.quantile(y_test, 1.0 - alpha / 2)
-    return float(low_test - radius), float(high_test + radius)
-
-
 def cqr_radius_from_calibration(
     y_calibration_samples: np.ndarray,
     y_calibration_observed: np.ndarray,
     alpha: float,
     params: AffineParams | None = None,
-    *,
-    clamp_radius: bool = True,
 ) -> float:
     """
     CQR radius from calibration: residual_i = max(q_lo_i - y_i, y_i - q_hi_i),
     radius = conformal (1-alpha) quantile of residuals (method="higher").
     If params is not None, apply affine to samples before taking quantiles.
-    If clamp_radius=True (default), return max(0, radius); if False, allow negative q (draft §3).
+    Negative radius is allowed (§4.1): a negative q shrinks an over-conservative base interval.
     """
     y_cal_s = np.asarray(y_calibration_samples)
     y_cal_o = np.asarray(y_calibration_observed).ravel()
@@ -84,10 +55,7 @@ def cqr_radius_from_calibration(
     high_cal = np.quantile(y_cal_s, 1.0 - alpha / 2, axis=1)
     residuals = np.maximum(low_cal - y_cal_o, y_cal_o - high_cal)
     level = _conformal_quantile_level(n_cal, alpha)
-    radius = float(np.quantile(residuals, level, method="higher"))
-    if clamp_radius:
-        radius = max(0.0, radius)
-    return radius
+    return float(np.quantile(residuals, level, method="higher"))
 
 
 def cqr_intervals_batch(
@@ -96,20 +64,17 @@ def cqr_intervals_batch(
     y_test_samples: np.ndarray,
     alpha: float,
     params: AffineParams | None = None,
-    *,
-    clamp_radius: bool = True,
 ) -> tuple[np.ndarray, float]:
     """
     CQR for many test points: one radius from calibration; per-test interval
     [q_lo - radius, q_hi + radius] using (optionally affine-corrected) quantiles.
-    Returns (intervals (n_test, 2), radius). Set clamp_radius=False to allow negative q.
+    Returns (intervals (n_test, 2), radius). Negative radius allowed (§4.1).
     """
     radius = cqr_radius_from_calibration(
         y_calibration_samples,
         y_calibration_observed,
         alpha,
         params=params,
-        clamp_radius=clamp_radius,
     )
     y_test_s = np.asarray(y_test_samples)
     if y_test_s.ndim == 1:

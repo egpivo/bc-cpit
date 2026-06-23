@@ -5,7 +5,6 @@ import pytest
 
 from cpit.baselines.quantile_baselines import (
     _conformal_quantile_level,
-    cqr_from_samples,
     cqr_intervals_batch,
     cqr_radius_from_calibration,
     quantile_interval_from_samples,
@@ -42,32 +41,12 @@ def test_quantile_interval_from_samples_width():
     assert hi == pytest.approx(99.0)
 
 
-def test_cqr_from_samples_coverage():
-    rng = np.random.default_rng(42)
-    n_cal = 50
-    m = 100
-    y_cal_s = rng.normal(0, 1, (n_cal, m))
-    y_cal_o = rng.normal(0, 1, n_cal)
-    y_test_s = rng.normal(0, 1, m)
-    lo, hi = cqr_from_samples(y_cal_s, y_cal_o, y_test_s, alpha=0.1)
-    assert lo < hi
-
-
-def test_cqr_from_samples_1d_cal():
-    rng = np.random.default_rng(1)
-    y_cal_s = rng.normal(0, 1, 100)
-    y_cal_o = np.array([0.0])
-    y_test_s = rng.normal(0, 1, 100)
-    lo, hi = cqr_from_samples(y_cal_s, y_cal_o, y_test_s, alpha=0.1)
-    assert lo < hi
-
-
 def test_cqr_radius_from_calibration_no_params():
     rng = np.random.default_rng(2)
     y_cal_s = rng.normal(0, 1, (30, 50))
     y_cal_o = rng.normal(0, 1, 30)
     r = cqr_radius_from_calibration(y_cal_s, y_cal_o, alpha=0.1)
-    assert r >= 0.0
+    assert np.isfinite(r)
 
 
 def test_cqr_radius_from_calibration_with_params():
@@ -79,11 +58,10 @@ def test_cqr_radius_from_calibration_with_params():
     assert np.isfinite(r)
 
 
-def test_cqr_radius_no_clamp_can_be_negative():
-    np.random.default_rng(5)
+def test_cqr_radius_can_be_negative():
     y_cal_s = np.tile(np.linspace(-3, 3, 50), (20, 1))
     y_cal_o = np.zeros(20)
-    r = cqr_radius_from_calibration(y_cal_s, y_cal_o, alpha=0.5, clamp_radius=False)
+    r = cqr_radius_from_calibration(y_cal_s, y_cal_o, alpha=0.5)
     assert isinstance(r, float)
 
 
