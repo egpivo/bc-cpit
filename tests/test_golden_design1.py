@@ -27,21 +27,21 @@ def design1_result():
 
 # â”€â”€ reference values (seed=42, recorded pre-refactor) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 GOLDEN = {
-    "cvm_raw": 479.18120067,
-    "cvm_bc": 1.51744667,
-    "cvm_bc_gam": 1.29282867,
-    "cvm_cpit": 0.90163551,
-    "cvm_cpit_gam": 0.79174412,
+    "cvm_raw": 469.12667976,
+    "cvm_bc": 1.35505867,
+    "cvm_bc_gam": 1.22346309,
+    "cvm_cpit": 1.42709867,
+    "cvm_cpit_gam": 1.27101180,
     "qerr_raw": 0.27260000,
     "qerr_bc": 0.01683158,
     "qerr_bc_gam": 0.01568421,
-    "qerr_cpit": 0.01283158,
-    "qerr_cpit_gam": 0.01068421,
+    "qerr_cpit": 0.01484211,
+    "qerr_cpit_gam": 0.01388421,
     "crps_raw": 0.19094947,
     "crps_bc": 0.08568954,
     "crps_bc_gam": 0.08574408,
-    "crps_cpit": 0.08567935,
-    "crps_cpit_gam": 0.08574240,
+    "crps_cpit": 0.08569821,
+    "crps_cpit_gam": 0.08575607,
 }
 
 _RTOL = 1e-5  # relative tolerance; small float differences across numpy versions

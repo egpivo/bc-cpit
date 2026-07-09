@@ -8,7 +8,7 @@ def randomized_pit(
     y_true: float,
     rng: np.random.Generator | None = None,
 ) -> np.ndarray:
-    """Randomized PIT: u = (a + V*b) / m, a=#{j: y_j < y_true}, b=#{j: y_j = y_true}, V~Unif(0,1)."""
+    """Randomized PIT: u = (N + V*(N*+1)) / (m+1), Eq. (9)."""
     y = np.asarray(y_samples_adj).ravel()
     m = y.size
     if m == 0:
@@ -18,7 +18,7 @@ def randomized_pit(
     a = np.sum(y < y_true)
     b = np.sum(y == y_true)
     v = rng.uniform(0.0, 1.0)
-    return (a + v * b) / float(m)
+    return (a + v * (b + 1)) / float(m + 1)
 
 
 def randomized_pit_batch(

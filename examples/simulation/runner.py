@@ -10,7 +10,7 @@ import pandas as pd
 
 from cpit.data_splitter import split_four_way, apply_split
 from cpit.bc import fit_global_affine, fit_x_dependent_affine_gam, apply_affine, apply_affine_x
-from cpit import fit_conformal_calibrator, randomized_pit, get_weighted_samples_at_x, quantile_from_weighted_samples_batched
+from cpit import fit_conformal_calibrator, randomized_pit, get_weighted_samples_at_x, quantile_from_weighted_samples_batched, hdr_interval_from_weighted_samples
 from cpit.evaluation import (
     cramer_von_mises,
     crps_from_weighted_samples,
@@ -167,6 +167,30 @@ def run_replicate(
         hi = quantile_from_weighted_samples_batched(Yw_cpit_gam, Ww_cpit_gam, 1.0 - alpha / 2)
         return np.stack([lo, hi], axis=1)
 
+    def hdr_intervals_cpit(alpha: float) -> np.ndarray:
+        out = np.zeros((n_test, 2))
+        for i in range(n_test):
+            out[i] = hdr_interval_from_weighted_samples(Yw_cpit[i], Ww_cpit[i], alpha)
+        return out
+
+    def hdr_intervals_cpit_smooth(alpha: float) -> np.ndarray:
+        out = np.zeros((n_test, 2))
+        for i in range(n_test):
+            out[i] = hdr_interval_from_weighted_samples(Yw_cpit[i], Ww_cpit[i], alpha, smooth=True)
+        return out
+
+    def hdr_intervals_cpit_gam(alpha: float) -> np.ndarray:
+        out = np.zeros((n_test, 2))
+        for i in range(n_test):
+            out[i] = hdr_interval_from_weighted_samples(Yw_cpit_gam[i], Ww_cpit_gam[i], alpha)
+        return out
+
+    def hdr_intervals_cpit_gam_smooth(alpha: float) -> np.ndarray:
+        out = np.zeros((n_test, 2))
+        for i in range(n_test):
+            out[i] = hdr_interval_from_weighted_samples(Yw_cpit_gam[i], Ww_cpit_gam[i], alpha, smooth=True)
+        return out
+
     intervals_qr_xdep = lambda alpha: cqr_intervals_batch(cal_samples_adj_gam, y_cal, test_samples_adj_gam, alpha)[0]
     if mode == "all":
         intervals_qr_raw = lambda alpha: cqr_intervals_batch(cal_samples, y_cal, test_samples, alpha)[0]
@@ -182,7 +206,12 @@ def run_replicate(
     if mode == "all":
         method_list = [
             ("Raw", intervals_raw), ("Bias-correction (Global)", intervals_bc), ("Bias-correction (GAM)", intervals_bc_gam),
-            ("CPIT (Global)", intervals_cpit), ("CPIT (GAM)", intervals_cpit_gam),
+            ("CPIT (Global)", intervals_cpit),
+            ("CPIT (Global, HDR)", hdr_intervals_cpit),
+            ("CPIT (Global, HDR, smooth)", hdr_intervals_cpit_smooth),
+            ("CPIT (GAM)", intervals_cpit_gam),
+            ("CPIT (GAM, HDR)", hdr_intervals_cpit_gam),
+            ("CPIT (GAM, HDR, smooth)", hdr_intervals_cpit_gam_smooth),
             ("Quantile residual (Raw)", intervals_qr_raw),
             ("Quantile residual (Global)", intervals_qr_global),
             ("Quantile residual (x-dependent)", intervals_qr_xdep),
@@ -197,6 +226,8 @@ def run_replicate(
         method_list = [
             ("Bias-correction (GAM)", intervals_bc_gam),
             ("CPIT (GAM)", intervals_cpit_gam),
+            ("CPIT (GAM, HDR)", hdr_intervals_cpit_gam),
+            ("CPIT (GAM, HDR, smooth)", hdr_intervals_cpit_gam_smooth),
             ("Quantile residual (x-dependent)", intervals_qr_xdep),
             ("Scaled residual (x-dependent)", intervals_sr_xdep),
             ("eCRPS (x-dependent)", intervals_crps_xdep),
@@ -262,6 +293,8 @@ def run_replicate(
 ALL_METHOD_NAMES = [
     "Raw", "Bias-correction (Global)", "Bias-correction (GAM)",
     "CPIT (Global)", "CPIT (GAM)",
+    "CPIT (Global, HDR)", "CPIT (Global, HDR, smooth)",
+    "CPIT (GAM, HDR)", "CPIT (GAM, HDR, smooth)",
     "Quantile residual (Raw)", "Quantile residual (Global)", "Quantile residual (x-dependent)",
     "Scaled residual (Raw)", "Scaled residual (Global)", "Scaled residual (x-dependent)",
     "eCRPS (Raw)", "eCRPS (Global)", "eCRPS (x-dependent)",
@@ -269,6 +302,7 @@ ALL_METHOD_NAMES = [
 
 GAM_ONLY_METHOD_NAMES = [
     "Bias-correction (GAM)", "CPIT (GAM)",
+    "CPIT (GAM, HDR)", "CPIT (GAM, HDR, smooth)",
     "Quantile residual (x-dependent)", "Scaled residual (x-dependent)", "eCRPS (x-dependent)",
 ]
 

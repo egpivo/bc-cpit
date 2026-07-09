@@ -7,17 +7,20 @@ from cpit.pit import randomized_pit, randomized_pit_batch
 
 
 def test_randomized_pit_below():
+    # y_true below all samples: a=0, b=0 -> u = V/4 in (0, 0.25)
     rng = np.random.default_rng(0)
     samples = np.array([1.0, 2.0, 3.0])
     u = randomized_pit(samples, 0.0, rng=rng)
-    assert u == pytest.approx(0.0)
+    assert 0.0 < u < 1.0 / (len(samples) + 1)
 
 
 def test_randomized_pit_above():
+    # y_true above all samples: a=m, b=0 -> u = (m+V)/(m+1) in (m/(m+1), 1)
     rng = np.random.default_rng(0)
     samples = np.array([1.0, 2.0, 3.0])
     u = randomized_pit(samples, 4.0, rng=rng)
-    assert u == pytest.approx(1.0)
+    m = len(samples)
+    assert m / (m + 1) < u < 1.0
 
 
 def test_randomized_pit_ties():
