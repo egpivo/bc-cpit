@@ -1,7 +1,7 @@
 # cpit
 
-[![CI](https://github.com/SpaceTimeViz/cpit/actions/workflows/ci.yml/badge.svg)](https://github.com/SpaceTimeViz/cpit/actions/workflows/ci.yml)
-[![codecov](https://codecov.io/gh/SpaceTimeViz/cpit/graph/badge.svg?token=C6VlD0m3Tq)](https://codecov.io/gh/SpaceTimeViz/cpit)
+[![CI](https://github.com/egpivo/cpit/actions/workflows/ci.yml/badge.svg)](https://github.com/egpivo/cpit/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/egpivo/cpit/graph/badge.svg?token=SNoFZfquk5)](https://codecov.io/gh/egpivo/cpit)
 [![PyPI](https://img.shields.io/pypi/v/cpit)](https://pypi.org/project/cpit/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
@@ -16,7 +16,7 @@ pip install cpit
 Development:
 
 ```bash
-git clone https://github.com/SpaceTimeViz/cpit.git
+git clone https://github.com/egpivo/cpit.git
 cd cpit
 pip install -e ".[dev]"
 ```
