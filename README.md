@@ -1,8 +1,8 @@
-# cpit
+# bc-cpit
 
 [![CI](https://github.com/egpivo/cpit/actions/workflows/ci.yml/badge.svg)](https://github.com/egpivo/cpit/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/egpivo/cpit/graph/badge.svg?token=SNoFZfquk5)](https://codecov.io/gh/egpivo/cpit)
-[![PyPI](https://img.shields.io/pypi/v/cpit)](https://pypi.org/project/cpit/)
+[![PyPI](https://img.shields.io/pypi/v/bc-cpit)](https://pypi.org/project/bc-cpit/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 Bias-corrected conformal PIT calibration for sample-based predictive distributions.
@@ -10,13 +10,13 @@ Bias-corrected conformal PIT calibration for sample-based predictive distributio
 ## Install
 
 ```bash
-pip install cpit
+pip install bc-cpit
 ```
 
 Development:
 
 ```bash
-git clone https://github.com/egpivo/cpit.git
+git clone https://github.com/egpivo/bc-cpit.git
 cd cpit
 pip install -e ".[dev]"
 ```
