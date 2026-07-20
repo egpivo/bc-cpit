@@ -4,9 +4,12 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "cpit"
-version = "0.1.0"
-description = "Bias-corrected conformal PIT calibration for sample-based predictive distributions"
+version = "1.0.0"
+description = "Calibrated Predictive Distributions from Sample-Based Generators"
 readme = "README.md"
+authors = [
+    {name = "Wen-Ting Wang", email = "egpivo@gmail.com"},
+]
 requires-python = ">=3.11"
 license = {text = "MIT"}
 keywords = ["conformal prediction", "calibration", "probability integral transform", "bias correction"]

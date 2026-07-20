@@ -82,6 +82,23 @@ examples/      orchestration scripts (call cpit)
   real_data/   §6 WB2 Taiwan + Europe
 ```
 
+## Citation
+
+The paper is currently being submitted to arXiv; the entry below will be updated with the final arXiv ID once it is live.
+
+If you use this package, please cite:
+
+> Wang, W.-T., Tzeng, S., Fan, Y.-T., & Huang, H.-C. (2026). Calibrated Predictive Distributions from Sample-Based Generators. *arXiv preprint arXiv:XXXX.XXXXX*.
+
+```bibtex
+@article{wang2026calibrated,
+  title   = {Calibrated Predictive Distributions from Sample-Based Generators},
+  author  = {Wang, Wen-Ting and Tzeng, ShengLi and Fan, Yu-Ting and Huang, Hsin-Cheng},
+  journal = {arXiv preprint arXiv:XXXX.XXXXX},
+  year    = {2026}
+}
+```
+
 ## License
 
 MIT — see [LICENSE](LICENSE).
