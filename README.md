@@ -1,7 +1,7 @@
 # bc-cpit
 
 [![CI](https://github.com/egpivo/cpit/actions/workflows/ci.yml/badge.svg)](https://github.com/egpivo/cpit/actions/workflows/ci.yml)
-[![codecov](https://codecov.io/gh/egpivo/cpit/graph/badge.svg?token=SNoFZfquk5)](https://codecov.io/gh/egpivo/cpit)
+[![codecov](https://codecov.io/gh/egpivo/bc-cpit/graph/badge.svg?token=SNoFZfquk5)](https://codecov.io/gh/egpivo/bc-cpit)
 [![PyPI](https://img.shields.io/pypi/v/bc-cpit)](https://pypi.org/project/bc-cpit/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
