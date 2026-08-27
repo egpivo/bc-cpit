@@ -5,7 +5,24 @@
 [![PyPI](https://img.shields.io/pypi/v/bc-cpit)](https://pypi.org/project/bc-cpit/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-Bias-corrected conformal PIT calibration for sample-based predictive distributions.
+Conditional generators (diffusion, ensembles, simulators) often return samples
+`Y(1),…,Y(m) ~ P̂(·|x)` with no tractable likelihood. Those sample clouds can be
+biased and poorly calibrated, and standard conformal tools mainly return a
+fixed-level set—not a predictive CDF you can query for arbitrary quantiles,
+exceedance probabilities, or tail losses.
+**bc-cpit** is a split-sample post-processing pipeline:
+1. **Bias correction** — fit an affine location–scale map on a held-out bias
+   split (global, or x-dependent via GAM).
+2. **Conformal PIT calibration** — calibrate randomized PITs on a calibration
+   split; represent the corrected law as a **weighted empirical distribution**
+   on the generator order statistics.
+From those weights you get threshold-coherent probabilities, quantiles, central /
+highest-density intervals, and calibrated resamples. An optional PIT-centrality
+wrapper adds nested intervals with finite-sample marginal coverage under
+exchangeability.
+
+This package does **not** retrain the generator; it recalibrates whatever samples
+you already have.
 
 ## Install
 
@@ -68,19 +85,6 @@ make pit-figures   # PIT histogram figures
 make run-wb2       # WB2 application: Taiwan + Europe (§6)
 ```
 
-## Layout
-
-```
-cpit/          Python package
-  bc/          bias correction (fit, apply)
-  baselines/   competing methods
-  evaluation/  metrics, PIT histograms, diagnostics
-  calibrator.py / pit.py / inference.py / weighted_samples.py / pipeline.py
-
-examples/      orchestration scripts (call cpit)
-  simulation/  §5 designs 1–3
-  real_data/   §6 WB2 Taiwan + Europe
-```
 
 ## Citation
 
